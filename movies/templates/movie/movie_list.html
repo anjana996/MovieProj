@@ -1,0 +1,145 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Movie Rating
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.movie-card {
+  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+  margin-bottom: 20px;
+  height: 100%; /* Ensure all cards are of equal height */
+  display: flex;
+  flex-direction: column;
+}
+.movie-card:hover {
+  transform: translateY(-5px);
+}
+.movie-poster {
+  max-width: 100%; /* Adjust the maximum width as needed */
+  height: 250px;
+}
+.movie-details {
+  padding: 15px;
+  text-align: left;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+.movie-title {
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.movie-description {
+  font-size: 1em;
+  margin-bottom: 10px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* Limit text to 3 lines */
+  -webkit-box-orient: vertical;
+}
+.movie-actors {
+  font-size: 0.9em;
+  color: #666;
+}
+.search-container {
+  text-align: center; /* Center the search bar */
+  margin-top: 20px; /* Adjust as needed */
+}
+.search-container input[type=text] {
+  padding: 10px;
+  font-size: 17px;
+  border: none;
+  border-radius: 5px;
+  background-color: #f1f1f1;
+  width: 60%; /* Adjust width as needed */
+  margin-right: 10px;
+}
+.search-container button {
+  padding: 10px 15px;
+  background: #000;
+  color: #fff;
+  font-size: 17px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.search-container button:hover {
+  background: #333;
+}
+.add-movie-btn {
+  font-weight: bold;
+  color: #fff;
+  background-color: #000;
+  border: none;
+  cursor: pointer;
+  padding: 10px 15px;
+  border-radius: 5px;
+}
+.add-movie-btn:hover {
+  background-color: #333;
+}
+</style>
+{% endblock %}
+
+{% block search_content %}
+<div class="search-container">
+  <input type="text" placeholder="Search..." name="search" id="searchInput">
+  <button type="button" onclick="performSearch()"><i class="fa fa-search"></i> Search</button>
+</div>
+{% endblock %}
+
+{% block add_movie_button %}
+<button class="w3-btn add-movie-btn" onclick="window.location.href='{% url 'add_movie' %}'">Add New Movie</button>
+{% endblock %}
+
+{% block content %}
+<div class="w3-container" id="movieContainer">
+  {% for category, movies in movies_by_category.items %}
+  <h3>{{ category }}</h3>
+
+  <div class="w3-row-padding w3-center w3-margin-top">
+    {% for movie in movies %}
+    <div class="w3-third w3-margin-bottom movie-card" id="movie_{{ movie.id }}">
+      <img class="movie-poster" src="{{ movie.poster.url }}" alt="{{ movie.title }} Poster">
+      <div class="movie-details">
+        <div>
+          <h3 class="movie-title">{{ movie.title }}</h3>
+          <p class="movie-description">{{ movie.description }}</p>
+        </div>
+        <div class="movie-actors"><small>Actors: {{ movie.actors }}</small></div>
+        <div>
+          <a href="{{ movie.trailer_link }}" class="w3-btn w3-black w3-margin-top"><i class="fa fa-play-circle"></i> Watch Trailer</a>
+          <button class="w3-btn w3-black w3-margin-top" onclick="window.location.href='{% url 'rate_movie' movie.id %}'"><i class="fa fa-star"></i> Rate & Review</button>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  {% endfor %}
+</div>
+
+<script>
+function performSearch() {
+  var input, filter, cards, card, title, i;
+  input = document.getElementById("searchInput");
+  filter = input.value.toUpperCase();
+  cards = document.getElementsByClassName("movie-card");
+
+  for (i = 0; i < cards.length; i++) {
+    card = cards[i];
+    title = card.getElementsByClassName("movie-title")[0];
+    if (title.innerText.toUpperCase().indexOf(filter) > -1) {
+      card.style.display = "";
+    } else {
+      card.style.display = "none";
+    }
+  }
+}
+</script>
+
+{% endblock %}

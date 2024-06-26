@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Profile
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.form-container {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  border-radius: 5px;
+  margin-top: 20px; /* Adjust margin as needed */
+}
+.profile-details img {
+  max-width: 200px;
+  margin-bottom: 10px;
+}
+.profile-details p {
+  margin-bottom: 10px;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+  <h2>Profile</h2>
+  <div class="profile-details">
+    {% if profile.profile_picture %}
+      <img src="{{ profile.profile_picture.url }}" alt="Profile Picture">
+    {% endif %}
+    <p><strong>Username:</strong> {{ user.username }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>First Name:</strong> {{ profile.first_name }}</p>
+    <p><strong>Last Name:</strong> {{ profile.last_name }}</p>
+  </div>
+<a href="{% url 'profile_edit' %}" class="w3-btn w3-black">Edit Profile</a></div>
+{% endblock %}

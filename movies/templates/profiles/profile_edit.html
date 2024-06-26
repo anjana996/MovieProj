@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Edit Profile
+{% endblock %}
+
+{% block extra_css %}
+<style>
+.form-container {
+  max-width: 600px;
+  margin: auto;
+  padding: 20px;
+  background-color: #fff;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+  border-radius: 5px;
+  margin-bottom: 40px; /* Increased margin below the form */
+}
+
+.form-container h2 {
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.form-container label {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.form-container input[type=text],
+.form-container input[type=email],
+.form-container textarea,
+.form-container input[type=file] {
+  width: calc(100% - 22px); /* Adjust width to accommodate button padding */
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.form-container button[type=submit] {
+  padding: 10px 20px;
+  background-color: #007bff; /* Blue color for save button */
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.form-container button[type=submit]:hover {
+  background-color: #0056b3; /* Darker shade of blue on hover */
+}
+
+@media (max-width: 600px) {
+  .form-container input[type=text],
+  .form-container input[type=email],
+  .form-container textarea,
+  .form-container input[type=file] {
+    width: 100%; /* Adjust for smaller screens */
+  }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="form-container">
+  <h2>Edit Profile</h2>
+  <form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="form-group">
+      <label for="username">Username</label>
+      <input type="text" class="form-control" id="username" name="username" value="{{ user.username }}">
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" class="form-control" id="email" name="email" value="{{ user.email }}">
+    </div>
+    <div class="form-group">
+      <label for="first_name">First Name</label>
+      <input type="text" class="form-control" id="first_name" name="first_name" value="{{ profile.first_name }}">
+    </div>
+    <div class="form-group">
+      <label for="last_name">Last Name</label>
+      <input type="text" class="form-control" id="last_name" name="last_name" value="{{ profile.last_name }}">
+    </div>
+
+    <button type="submit" class="w3-btn w3-black">Save changes</button>
+  </form>
+</div>
+{% endblock %}
